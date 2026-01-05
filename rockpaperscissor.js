@@ -6,7 +6,13 @@ class Game {
   play(playerChoice) {
     const computerChoice = this.getComputerChoice();
     const result = this.determineWinner(playerChoice, computerChoice);
-    return { computerChoice, result };
+
+    // Simple result display (you can improve UI later)
+    alert(
+      `You chose: ${playerChoice}\n` +
+      `Computer chose: ${computerChoice}\n\n` +
+      `Result: ${result.toUpperCase()}`
+    );
   }
 
   getComputerChoice() {
@@ -15,16 +21,32 @@ class Game {
   }
 
   determineWinner(playerChoice, computerChoice) {
-    if (playerChoice === computerChoice) {
-      return 'draw';
-    }
+    if (playerChoice === computerChoice) return 'draw';
+
     if (
       (playerChoice === 'rock' && computerChoice === 'scissors') ||
       (playerChoice === 'paper' && computerChoice === 'rock') ||
       (playerChoice === 'scissors' && computerChoice === 'paper')
     ) {
-      return 'player';
+      return 'player wins';
     }
-    return 'computer';
+
+    return 'computer wins';
+  }
+
+  promptUser() {
+    alert('Choose Rock, Paper, or Scissors!');
   }
 }
+
+/* 👇 THIS MUST BE OUTSIDE THE CLASS */
+function choose(choice) {
+  if (!window.game) return;
+  window.game.play(choice);
+}
+
+// Initialize game
+window.onload = () => {
+  window.game = new Game();
+  game.promptUser();
+};

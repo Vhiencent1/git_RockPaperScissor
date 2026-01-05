@@ -5,8 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
     <script src="rockpaperscissor.js" defer></script>
+    <link rel="stylesheet" href="rockpaperscissor.css">
+    
 </head>
 <body>
-    
+    <div class="rps-container" aria-label="Choose Rock Paper or Scissors">
+        <button class="rps-btn" onclick="choose('rock')" aria-label="Rock">
+            <span aria-hidden="true">✊</span>
+            <span class="rps-label">Rock</span>
+        </button>
+        <button class="rps-btn" onclick="choose('paper')" aria-label="Paper">
+            <span aria-hidden="true">✋</span>
+            <span class="rps-label">Paper</span>
+        </button>
+        <button class="rps-btn" onclick="choose('scissors')" aria-label="Scissors">
+            <span aria-hidden="true">✌️</span>
+            <span class="rps-label">Scissors</span>
+        </button>
+
+        <button class="play-again" onclick="game?.promptUser?.()">Play Again</button>
+    </div>
+
+        
 </body>
 </html>
