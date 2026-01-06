@@ -1,52 +1,86 @@
 class Game {
   constructor() {
     this.choices = ['rock', 'paper', 'scissors'];
+    this.playerScore = 0;
+    this.computerScore = 0;
+
+    this.resultDiv = document.querySelector('.results');
+    this.playerScoreSpan = document.getElementById('player-score');
+    this.computerScoreSpan = document.getElementById('computer-score');
   }
 
-  play(playerChoice) {
+  playRound(playerChoice) {
     const computerChoice = this.getComputerChoice();
-    const result = this.determineWinner(playerChoice, computerChoice);
 
-    // Simple result display (you can improve UI later)
-    alert(
-      `You chose: ${playerChoice}\n` +
-      `Computer chose: ${computerChoice}\n\n` +
-      `Result: ${result.toUpperCase()}`
-    );
+    // DRAW
+    if (playerChoice === computerChoice) {
+      this.resultDiv.textContent = `Draw! Both chose ${playerChoice}`;
+      return;
+    }
+
+    const playerWins =
+      (playerChoice === 'rock' && computerChoice === 'scissors') ||
+      (playerChoice === 'paper' && computerChoice === 'rock') ||
+      (playerChoice === 'scissors' && computerChoice === 'paper');
+
+    // PLAYER WINS
+    if (playerWins) {
+      this.playerScore++;
+      this.resultDiv.textContent = `You win! ${playerChoice} beats ${computerChoice}`;
+    }
+    // COMPUTER WINS
+    else {
+      this.computerScore++;
+      this.resultDiv.textContent = `You lose! ${computerChoice} beats ${playerChoice}`;
+    }
+
+    this.updateScore();
+    this.checkWinner();
   }
 
   getComputerChoice() {
-    const randomIndex = Math.floor(Math.random() * this.choices.length);
-    return this.choices[randomIndex];
+    return this.choices[Math.floor(Math.random() * this.choices.length)];
   }
 
-  determineWinner(playerChoice, computerChoice) {
-    if (playerChoice === computerChoice) return 'draw';
+  updateScore() {
+    this.playerScoreSpan.textContent = this.playerScore;
+    this.computerScoreSpan.textContent = this.computerScore;
+  }
 
-    if (
-      (playerChoice === 'rock' && computerChoice === 'scissors') ||
-      (playerChoice === 'paper' && computerChoice === 'rock') ||
-      (playerChoice === 'scissors' && computerChoice === 'paper')
-    ) {
-      return 'player wins';
+  checkWinner() {
+    if (this.playerScore === 5 || this.computerScore === 5) {
+      this.resultDiv.textContent =
+        this.playerScore === 5
+          ? '🎉 YOU WON THE GAME!'
+          : '💻 COMPUTER WON THE GAME!';
+      this.disableButtons();
     }
-
-    return 'computer wins';
   }
 
-  promptUser() {
-    alert('Choose Rock, Paper, or Scissors!');
+  disableButtons() {
+    document.querySelectorAll('.rps-btn').forEach(btn => btn.disabled = true);
+  }
+
+  resetGame() {
+    this.playerScore = 0;
+    this.computerScore = 0;
+    this.updateScore();
+    this.resultDiv.textContent = 'Game reset. Choose again!';
+    document.querySelectorAll('.rps-btn').forEach(btn => btn.disabled = false);
   }
 }
 
-/* 👇 THIS MUST BE OUTSIDE THE CLASS */
-function choose(choice) {
-  if (!window.game) return;
-  window.game.play(choice);
-}
-
-// Initialize game
+// INIT GAME
 window.onload = () => {
-  window.game = new Game();
-  game.promptUser();
+  const game = new Game();
+
+  document.querySelectorAll('.rps-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const choice = button.dataset.choice;
+      game.playRound(choice);
+    });
+  });
+
+  document.querySelector('.play-again')
+    .addEventListener('click', () => game.resetGame());
 };

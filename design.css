@@ -1,16 +1,101 @@
-/* simple styling for RPS buttons */
-        .rps-container { display:flex; gap:12px; align-items:center; margin:20px; }
-        .rps-btn {
-            font-size:28px;
-            padding:12px 18px;
-            border-radius:8px;
-            border:1px solid #ccc;
-            background:#fff;
-            cursor:pointer;
-            display:flex;
-            align-items:center;
-            gap:8px;
-        }
-        .rps-btn:hover { box-shadow:0 2px 6px rgba(0,0,0,0.12); }
-        .rps-label { font-size:14px; color:#333; }
-        .play-again { margin-left:8px; padding:8px 12px; }
+/* ===== BACKGROUND CONTAINER ===== */
+.container {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: lightblue; /* fallback color */
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, #3498db 10%, transparent 20%),
+              radial-gradient(circle, transparent 10%, #3498db 20%);
+  background-size: 30px 30px;
+  animation: moveBackground 8s linear infinite;
+  z-index: 0; /* background behind content */
+}
+
+@keyframes moveBackground {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(20%, 20%); }
+}
+
+/* ===== BODY RESET ===== */
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+/* ===== RPS CONTAINER ===== */
+.rps-container {
+  position: relative;
+  z-index: 1; /* above background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.85); /* semi-transparent panel */
+  padding: 20px 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* ===== RPS BUTTON STYLE ===== */
+.rps-btn {
+  width: 9em;
+  height: 3em;
+  border-radius: 30em;
+  font-size: 15px;
+  font-family: inherit;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+.rps-btn::before {
+  content: '';
+  width: 0;
+  height: 100%;
+  border-radius: 30em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
+  transition: width 0.5s ease;
+  z-index: -1;
+}
+
+.rps-btn:hover::before { width: 100%; }
+.rps-btn:hover { color: #000; }
+.rps-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.rps-btn span[aria-hidden="true"] { font-size: 18px; }
+
+.play-again {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background: #222;
+  color: #fff;
+  font-size: 14px;
+}
+
+.play-again:hover { background: #444; }
